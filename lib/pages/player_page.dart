@@ -77,7 +77,7 @@ class _PlayerPageState extends State<PlayerPage> {
                       image: DecorationImage(
                           fit: BoxFit.cover,
                           image: AssetImage(
-                              "assets/images/background_person.jpg")),
+                              "assets/images/background_person.svg")),
                       boxShadow: [
                         BoxShadow(
                           spreadRadius: 15,
@@ -103,20 +103,6 @@ class _PlayerPageState extends State<PlayerPage> {
               oldMusicIndex != null
                   ? musics[oldMusicIndex!]
                   : Music("", "", "assetMusic"),
-            ),
-          ),
-
-          //lottie
-          Expanded(
-            flex: 2,
-            child: isPause ?Align(
-                alignment: const Alignment(-0.5, -1),
-                child:Lottie.asset("assets/lotties/playing_song.json",
-                    fit: BoxFit.cover, width: 250, height: 100,repeat: true)
-            ):Align(
-              alignment: const Alignment(-0.02, 2),
-              child: Lottie.asset("assets/lotties/playing_song4.json",
-                  fit: BoxFit.cover, width: 80),
             ),
           ),
 

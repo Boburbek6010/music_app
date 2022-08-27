@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:music_app/models/music_model.dart';
 import 'package:music_app/pages/player_page.dart';
 import '../services/remote_service.dart';
-import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -111,7 +109,7 @@ class _HomePageState extends State<HomePage> {
                   decoration: !changeBackground ? const BoxDecoration(
                     image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: AssetImage('assets/images/background_person.jpg')),
+                        image: AssetImage('assets/images/background_person.svg')),
                   )
                   :const BoxDecoration(),
                   child: Center(
