@@ -1,0 +1,57 @@
+name: music_app
+description: New Project for music app
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.17.6 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  #design
+  cupertino_icons: ^1.0.2
+
+  #lottie
+  lottie: ^1.4.1
+
+  #music
+  assets_audio_player: ^3.0.5
+  audioplayers: ^1.0.1
+  audio_video_progress_bar: ^0.10.0
+
+  #firebase
+  firebase_core: ^1.21.0
+  firebase_auth: ^3.6.4
+  firebase_analytics: ^9.3.2
+  firebase_crashlytics: ^2.8.8
+  firebase_remote_config: ^2.0.15
+  firebase_database: ^9.1.0
+  firebase_storage: ^10.3.4
+  cloud_firestore: ^3.4.6
+
+  #locale database
+  shared_preferences: ^2.0.15
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/audios/
+    - assets/lotties/
+
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
