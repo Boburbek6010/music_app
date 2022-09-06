@@ -33,7 +33,6 @@ class _SplashPageState extends State<SplashPage> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text("Ilhomjon Abdusalomov qo'shiqlari"),
-        // backgroundColor: Colors.transparent,
         elevation: 0,
       ),
       body: Container(

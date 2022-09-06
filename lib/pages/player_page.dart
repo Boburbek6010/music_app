@@ -1,16 +1,23 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:music_app/services/util_service.dart';
 import '../models/music_model.dart';
 import 'home_page.dart';
 
 class PlayerPage extends StatefulWidget {
   static const id = "/player_page";
+  late Music music;
 
-  const PlayerPage({Key? key}) : super(key: key);
+   PlayerPage({Key? key, music}) : super(key: key) {
+     this.music = music;
+   }
 
   @override
   State<PlayerPage> createState() => _PlayerPageState();
@@ -18,30 +25,55 @@ class PlayerPage extends StatefulWidget {
 
 class _PlayerPageState extends State<PlayerPage> {
   final assetsAudioPlayer = AssetsAudioPlayer.withId("0");
-  AudioPlayer audioPlayer = AudioPlayer();
+  double changeState = 0;
+  int gettingCurrent = 0;
+  double currentPos = 0;
+  bool nextDone = true;
+  bool prevDone = true;
 
-  @override
-  void initState() {
-    super.initState();
+  void next(index) async {
+    if(widget.music.title != musics.last.title){
+      assetsAudioPlayer.open(Audio(musics[index+1].assetMusic));
+      widget.music = musics[index + 1];
+      oldMusicIndex != null ? oldMusicIndex = oldMusicIndex! + 1: null;
+      assetsAudioPlayer.isPlaying.value ? isPause = true :isPause = false;
+      setState(() {});
+    }else{
+      Utils.fireSnackBar("Ro'yxatning oxiri", context);
+    }
+  }
+  void prev(index) async {
+    if(widget.music.title != musics.first.title){
+      assetsAudioPlayer.open(Audio(musics[index-1].assetMusic));
+      widget.music = musics[index - 1];
+      oldMusicIndex != null ? oldMusicIndex = oldMusicIndex! - 1: null;
+      setState(() {});
+    }else{
+      Utils.fireSnackBar("Ro'yxatning boshidasiz", context);
+    }
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    assetsAudioPlayer.dispose();
-    audioPlayer.dispose();
+
+  Duration getMusicsDuration(String text){
+    int minute = int.parse(text.substring(0,2));
+    int second = int.parse(text.substring(3));
+    return Duration(minutes: minute, seconds: second);
   }
 
-  Future<void> nextSeek() async {
+  void nextSeek() async {
     await assetsAudioPlayer.seekBy(const Duration(seconds: 10));
   }
 
-  Future<void> prevSeek() async {
+  void prevSeek() async {
     await assetsAudioPlayer.seekBy(const Duration(seconds: -10));
   }
 
+  // void next()async{
+  //   await assetsAudioPlayer.next();
+  // }
+
   void goBack(){
-    Navigator.of(context).pushNamed(HomePage.id);
+    Navigator.of(context).pop();
   }
 
   @override
@@ -105,37 +137,80 @@ class _PlayerPageState extends State<PlayerPage> {
                   : Music("", "", "assetMusic"),
             ),
           ),
-
           //indicator
+          // Expanded(
+          //   child: StreamBuilder<DurationState>(
+          //     // stream: _durationState,
+          //     builder: (context, snapshot) {
+          //       final durationState = snapshot.data;
+          //       final progress = durationState?.progress ?? Duration.zero;
+          //       final buffered = durationState?.buffered ?? Duration.zero;
+          //       final total = durationState?.total ?? Duration.zero;
+          //       return Container(
+          //         margin: const EdgeInsets.symmetric(horizontal: 30),
+          //         alignment: Alignment.bottomCenter,
+          //         child: ProgressBar(
+          //           thumbGlowRadius: 35,
+          //           thumbRadius: 15,
+          //           thumbColor: Colors.blue.shade900,
+          //           bufferedBarColor: Colors.indigo,
+          //           progressBarColor: Colors.indigo,
+          //           baseBarColor: Colors.indigoAccent,
+          //           progress: progress,
+          //           buffered: buffered,
+          //           total: total,
+          //           onSeek: (duration) {
+          //             print('User selected a new time: $duration');
+          //           },
+          //         ),
+          //       );
+          //     },
+          //   ),
+          // ),
           Expanded(
-            child: StreamBuilder<DurationState>(
-              // stream: _durationState,
-              builder: (context, snapshot) {
+            child: StreamBuilder<Duration>(
+              stream: assetsAudioPlayer.currentPosition,
+              builder: (_, snap) {
+                return Slider(
+                  activeColor: Colors.indigo,
+                  inactiveColor: Colors.white,
+                  thumbColor: Colors.indigo,
+                  min: 0,
+                  value: ((snap.data?.inSeconds ?? 0)).toDouble(),
+                  max: getMusicsDuration(widget.music.length).inSeconds.toDouble(),
+                  onChanged: (double value) {
+                    setState(() {
+                      assetsAudioPlayer.seek(Duration(milliseconds: (value * 1100).toInt()));
+                    });
+                  },
+                  onChangeEnd: (double value) async {
+                    // setState(()  {
+                    //   assetsAudioPlayer.seek(Duration(milliseconds: (value).toInt()));
+                    //
+                    //   changeState = value;
+                    // });
+                    // changeState = await ww(value);
+                    // isPause = !isPause;
+                    // setState(() {});
+                    // print(Duration(seconds: value.toInt()));
+                    // double a = value-getMusicsDuration(widget.music.length).inSeconds.toDouble();
 
-                final durationState = snapshot.data;
-                final progress = durationState?.progress ?? Duration.zero;
-                final buffered = durationState?.buffered ?? Duration.zero;
-                final total = durationState?.total ?? Duration.zero;
-                return Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 30),
-                  alignment: Alignment.bottomCenter,
-                  child: ProgressBar(
-                    thumbGlowRadius: 35,
-                    thumbRadius: 15,
-                    thumbColor: Colors.blue.shade900,
-                    bufferedBarColor: Colors.indigo,
-                    progressBarColor: Colors.indigo,
-                    baseBarColor: Colors.indigoAccent,
-                    progress: progress,
-                    buffered: buffered,
-                    total: total,
-                    onSeek: (duration) {
-                      print('User selected a new time: $duration');
-                    },
-                  ),
+                    // if(a>0) {
+                    //   assetsAudioPlayer.seek(Duration(milliseconds: 100), force: true);
+                    // } else {
+                    //
+                    // }
+
+                    // assetsAudioPlayer.open(Audio(widget.music.assetMusic),
+                    //     pitch: value,
+                    //     seek: Duration(seconds: value.toInt()),
+                    //     showNotification: true,
+                    //     notificationSettings: const NotificationSettings()
+                    // );
+                  },
                 );
               },
-            ),
+            )
           ),
 
           //Navigator Bar
@@ -193,9 +268,7 @@ class _PlayerPageState extends State<PlayerPage> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           IconButton(
-            onPressed: () {
-              assetsAudioPlayer.shuffle;
-            },
+            onPressed: () => prev(oldMusicIndex),
             icon: const Icon(
               CupertinoIcons.backward_end,
               color: Colors.white,
@@ -206,7 +279,7 @@ class _PlayerPageState extends State<PlayerPage> {
               splashColor: Colors.blue,
               onPressed: () => prevSeek(),
               icon: const Icon(CupertinoIcons.backward_fill,
-                  color: Colors.white)),
+                  color: Colors.white),),
           FloatingActionButton(
             child: !isPause
                 ? const Icon(
@@ -232,7 +305,7 @@ class _PlayerPageState extends State<PlayerPage> {
                 color: Colors.white,
               )),
           IconButton(
-            onPressed: () {},
+            onPressed: () => next(oldMusicIndex),
             icon: const Icon(
               CupertinoIcons.forward_end,
               color: Colors.white,
@@ -242,10 +315,4 @@ class _PlayerPageState extends State<PlayerPage> {
       ),
     );
   }
-}
-class DurationState {
-  // DurationState({required this.progress, required this.buffered});
-  final Duration progress = Duration(seconds: 7);
-  final Duration buffered = Duration(seconds: 3);
-  final Duration total = Duration(seconds: 10);
 }

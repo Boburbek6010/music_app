@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -41,7 +43,6 @@ class RemoteConfigService {
       ),
     ),
   };
-  static String trouble = "indicator";
 
   static Future<void> initConfig() async {
     await remoteConfig.setConfigSettings(RemoteConfigSettings(
@@ -55,7 +56,8 @@ class RemoteConfigService {
     await fetchConfig();
   }
 
-  static Future<void> fetchConfig() async {
+  static Future<String> fetchConfig() async {
+    String trouble = "";
     await remoteConfig.fetchAndActivate().then((value) => {
           // Color of Scaffold
           backgroundColor =
@@ -65,10 +67,9 @@ class RemoteConfigService {
           debugPrint("BackgroundColor Remote config is worked: $value"),
 
           // setting of all problem
-          backgroundColor = remoteConfig.getString('nervous_problem').isNotEmpty
+      trouble = remoteConfig.getString('nervous_problem').isNotEmpty
               ? remoteConfig.getString('nervous_problem')
               : 'indicator',
-          debugPrint("Problem Remote config is worked: $value"),
 
           //
           // // setting of indicator
@@ -76,6 +77,8 @@ class RemoteConfigService {
           //     ? remoteConfig.getString('nervous_problem')
           //     : 'indicator',
           // debugPrint("Problem Remote config is worked: $value"),
-        });
-  }
+        },
+
+    );
+    return trouble;  }
 }

@@ -29,6 +29,13 @@
             {
               "client_id": "212650628589-0r27pgpkpkoafa150r00ptar7rqp9eq3.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "212650628589-l5d4rje03kvql773m90naophvuerjhec.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.pdp.musicApp"
+              }
             }
           ]
         }

@@ -1,9 +1,8 @@
-import 'package:firebase_database/firebase_database.dart';
+import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:music_app/pages/sign_in_page.dart';
-import 'package:music_app/pages/splash_page.dart';
-
 import '../services/remote_service.dart';
 
 class IntroPage extends StatefulWidget {
@@ -19,32 +18,51 @@ class _IntroPageState extends State<IntroPage> {
 
   bool changeEverything = false;
 
+  fetchDataFromCloud()async{
+    final instance = FirebaseFirestore.instance;
+    const String mainFolder = 'me';
+    final DocumentSnapshot<Map<String, dynamic>> query =
+    await instance.collection(mainFolder).doc("1").get();
+    changeEverything = !query.data()!["isQori"];
+    setState(() {});
+  }
+
+
+
+
+  String trouble = "indicator";
+
   void _next() async {
     await Future.delayed(const Duration(seconds: 4));
-    _goWelcome();
+    changeEverything ?const SizedBox.shrink()
+        :_goWelcome();
   }
 
   void _goWelcome() {
     Navigator.pushReplacementNamed(context, SignInPage.id);
   }
 
-  void _getInfo() async {
-    print("initConfig");
-    await RemoteConfigService.initConfig();
+  void fetchData()async{
+   trouble = await RemoteConfigService.fetchConfig();
+   setState(() {
+
+   });
   }
+
+
 
   @override
   void initState() {
     super.initState();
-    _getInfo();
-    changeEverything ? ""
-    :_next();
+    fetchData();
+    fetchDataFromCloud();
+    _next();
   }
 
   @override
   Widget build(BuildContext context) {
     return changeEverything
-        ? RemoteConfigService.inCaseProblem[RemoteConfigService.trouble]
+        ? RemoteConfigService.inCaseProblem[trouble]
         : Scaffold(
             backgroundColor: Colors.white,
             body: Column(

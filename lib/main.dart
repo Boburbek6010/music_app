@@ -13,14 +13,12 @@ import 'package:music_app/pages/splash_page.dart';
 
 import 'firebase_options.dart';
 
-Future<void> main() async {
-  runZonedGuarded<Future<void>>(() async {
+void main() async {
+  runZonedGuarded<void>(() async {
     WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
     runApp(const MyApp());
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   }, (error, stack) =>
       FirebaseCrashlytics.instance.recordError(error, stack, fatal: true));
 }
@@ -44,7 +42,7 @@ class MyApp extends StatelessWidget {
       routes: {
         SplashPage.id:(context) => const SplashPage(),
         HomePage.id:(context) => const HomePage(),
-        PlayerPage.id:(context) => const PlayerPage(),
+        PlayerPage.id:(context) =>  PlayerPage(),
         SignInPage.id:(context) => const SignInPage(),
         SignUpPage.id:(context) => const SignUpPage(),
         IntroPage.id:(context) => const IntroPage(),

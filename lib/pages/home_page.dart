@@ -43,7 +43,6 @@ class _HomePageState extends State<HomePage> {
 
 
   final assetsAudioPlayer = AssetsAudioPlayer.withId("0");
-  AudioPlayer audioPlayer = AudioPlayer();
   bool changeBackground = false;
 
 
@@ -57,36 +56,26 @@ class _HomePageState extends State<HomePage> {
     await RemoteConfigService.initConfig();
   }
 
-
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   assetsAudioPlayer.dispose();
-  //   audioPlayer.dispose();
-  // }
-
-  void nextSeek() async {
-    await assetsAudioPlayer.seekBy(const Duration(seconds: 10));
-  }
-
-  void prevSeek() async {
-    await assetsAudioPlayer.seekBy(const Duration(seconds: -10));
-  }
-
   void _playingSongs(String assetsPath, {int? index}) {
     isPause = isPause ? index != oldMusicIndex : true;
     oldMusicIndex = index;
     setState(() {});
     isPause
         ? assetsAudioPlayer.open(Audio(assetsPath),
-            showNotification: true,
+            showNotification: false,
             notificationSettings: const NotificationSettings())
         : assetsAudioPlayer.stop();
-    goPlayer();
+    goPlayer(index!);
   }
 
-  void goPlayer() {
-    Navigator.of(context).pushNamed(PlayerPage.id);
+  void goPlayer(int index) {
+    // Navigator.of(context).pushNamed(PlayerPage.id);
+    Navigator.push (
+      context,
+      MaterialPageRoute (
+        builder: (BuildContext context) => PlayerPage(music: musics[index]),
+      ),
+    );
   }
 
   @override
