@@ -43,8 +43,8 @@ class MyApp extends StatelessWidget {
         SplashPage.id:(context) => const SplashPage(),
         HomePage.id:(context) => const HomePage(),
         PlayerPage.id:(context) =>  PlayerPage(),
-        SignInPage.id:(context) => const SignInPage(),
-        SignUpPage.id:(context) => const SignUpPage(),
+        // SignInPage.id:(context) => const SignInPage(),
+        // SignUpPage.id:(context) => const SignUpPage(),
         IntroPage.id:(context) => const IntroPage(),
       },
     );

@@ -1,8 +1,7 @@
-import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:music_app/pages/sign_in_page.dart';
+import 'package:music_app/pages/splash_page.dart';
 import '../services/remote_service.dart';
 
 class IntroPage extends StatefulWidget {
@@ -39,7 +38,7 @@ class _IntroPageState extends State<IntroPage> {
   }
 
   void _goWelcome() {
-    Navigator.pushReplacementNamed(context, SignInPage.id);
+    Navigator.pushReplacementNamed(context, SplashPage.id);
   }
 
   void fetchData()async{

@@ -1,7 +1,7 @@
 name: music_app
 description: New Project for music app
 
-version: 1.0.0+1
+version: 1.0.0+6
 
 environment:
   sdk: ">=2.17.6 <3.0.0"

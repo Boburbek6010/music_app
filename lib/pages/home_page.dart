@@ -69,7 +69,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   void goPlayer(int index) {
-    // Navigator.of(context).pushNamed(PlayerPage.id);
     Navigator.push (
       context,
       MaterialPageRoute (
@@ -82,8 +81,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
             backgroundColor: changeBackground
-                ? RemoteConfigService
-                    .predictableBackground[RemoteConfigService.backgroundColor]
+                ? RemoteConfigService.predictableBackground[RemoteConfigService.backgroundColor]
                 : Colors.white,
             appBar: AppBar(
               automaticallyImplyLeading: false,

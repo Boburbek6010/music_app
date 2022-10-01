@@ -15,17 +15,17 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
 
 
-  void message(){
-    Utils.fireSnackBar("Siz ro'yxatdan o'tgansiz", context);
-  }
+  // void message(){
+  //   Utils.fireSnackBar("Siz ro'yxatdan o'tgansiz", context);
+  // }
 
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(Duration.zero, () {
-      message();
-    });
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   Future.delayed(Duration.zero, () {
+  //     message();
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
